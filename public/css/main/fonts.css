@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:200,400,700,900&subset=cyrillic');
+@font-face {
+    font-family: Gotham Pro;
+    src: url(../../fonts/GothamPro-Light.ttf);
+    font-weight: 200;
+}
+
+@font-face {
+    font-family: Gotham Pro;
+    src: url(../../fonts/GothamPro-Medium.ttf);
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: Gotham Pro;
+    src: url(../../fonts/GothamPro-Bold.ttf);
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: Muller;
+    src: url('../../fonts/Fontfabric - MullerHeavy.otf');
+    font-weight: 800;
+}
