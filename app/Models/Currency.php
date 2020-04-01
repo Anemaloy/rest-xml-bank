@@ -16,27 +16,20 @@ class Currency extends Model
         for ($countDay; $countDay > 0; $countDay--) {
             
             $date = new \DateTime('-' . $countDay . ' days');
-            $xml = new \DOMDocument();
-            $url = 'http://www.cbr.ru/scripts/XML_daily.asp?date_req=' . $date->format('d.m.Y');
-        
-            if (@$xml->load($url))
-            {
-                $root = $xml->documentElement;
-                $items = $root->getElementsByTagName('Valute');
-            
-                foreach ($items as $k => $item)
-                { 
-                    $currecy = New Currency;
-                    $currecy->valuteID = $item->getAttribute('ID');
-                    $currecy->numCode = $item->getElementsByTagName('NumCode')->item(0)->nodeValue;
-                    $currecy->сharCode = $item->getElementsByTagName('CharCode')->item(0)->nodeValue;
-                    $currecy->value = floatval(str_replace(',', '.', $item->getElementsByTagName('Value')->item(0)->nodeValue));
-                    $currecy->date = $date->format('Y-m-d');
-                    $currecy->save();
-                }
-            } else {
-                $error[] = 'day' . $date->format('Y-m-d') . 'not parsing';
+            $url = 'http://www.cbr.ru/scripts/XML_daily.asp?date_req=' . $date->format('d.m.Y'); 
+            $xml = file_get_contents($url);
+            $feed = simplexml_load_string($xml);
+         
+            foreach ($feed as $k => $v) {
+                $currecy = New Currency;
+                $currecy->valuteID = (string)$v->attributes();
+                $currecy->numCode = (int)$v->NumCode;
+                $currecy->сharCode = (string)$v->CharCode;
+                $currecy->value = floatval(str_replace(',', '.', (string)$v->Value));
+                $currecy->date = $date->format('Y-m-d');
+                $currecy->save();
             }
+            
         }
         if (Currency::count() == 0) {
             $success = false;
