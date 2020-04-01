@@ -4,6 +4,7 @@
             <p class="subtitle"> Введите количетсво дней (от 30) для заполнения базы данных</p>
             <input @change="checkCountDay" v-model="countDay" type="text">
             <button @click="fiilBD">заполнить БД</button>
+            <p>{{errorServer}}</p>
         </section>
         <hr>
         <section v-if="valuteList.length > 0">
@@ -38,6 +39,7 @@
                 valuteList: [],
                 resultList: [],
                 errors: null,
+                errorServer: null,
                 filter: {
                     valuteID: null,
                     date: null,
@@ -59,7 +61,10 @@
                    count_day: this.countDay
                }}).then(response => {
                    if (response.data.success == true) {
+                       vm.errorServer = null;
                        vm.getValute();
+                   } else {
+                       vm.errorServer = 'Ошибка доступа к сервису'
                    }
                })
            },

@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Currency extends Model
 {
     public $table = "currency";
-    public $timestamps = false;
     //
     public static function fillBD ($request) {
         Currency::truncate();
         $error = array();
+        $success = true;
         $countDay = $request->count_day;
         for ($countDay; $countDay > 0; $countDay--) {
             
@@ -37,6 +37,9 @@ class Currency extends Model
             } else {
                 $error[] = 'day' . $date->format('Y-m-d') . 'not parsing';
             }
+        }
+        if (Currency::count() == 0) {
+            $success = false;
         }
         return json_encode(['success' => true, 'errors' => $error]);
     }
